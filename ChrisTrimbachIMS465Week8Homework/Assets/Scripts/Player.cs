@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private float sensitivity = 1f;
 
-    private Vector3 currentVelocity = new Vector3();
+    private Vector3 currentVelocity = new Vector3(0, 0, 0);
     private float LookX = 0f;
     private float LookY = 0f;
 
@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
         head = GameObject.FindGameObjectWithTag("Head");
         mainCamera = this.GetComponentInChildren<Camera>();
         controller = this.GetComponent<CharacterController>();
-
+        rigid = this.GetComponent<Rigidbody>();
         Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -53,6 +53,7 @@ public class Player : MonoBehaviour
     private void Movement()
     {
         controller.Move(transform.TransformDirection(currentVelocity * moveSpeed));
+        //rigid.MovePosition(currentVelocity + rigid.transform.position);
     }
 
     public void OnLook(InputValue value)
