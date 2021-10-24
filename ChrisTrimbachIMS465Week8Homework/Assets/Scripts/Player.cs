@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     private float LookX = 0f;
     private float LookY = 0f;
 
+    private Rigidbody grabbedObj = null;
+    private float grabDist = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +34,11 @@ public class Player : MonoBehaviour
     {
         Look();
         Movement();
+
+        if (grabbedObj != null)
+        {
+            MaintainGrab();
+        }
     }
 
     // Update is called once per frame
@@ -84,6 +92,34 @@ public class Player : MonoBehaviour
 
     public void OnFire(InputValue value)
     {
+        if (value.Get<float>() == 1)
+        {
+            if (grabbedObj == null)
+            {
+                RaycastHit hit;
+                if (Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit))
+                {
+                    if (hit.collider.tag == "Key")
+                    {
+                        grabbedObj = hit.rigidbody;
+                        grabbedObj.useGravity = false;
+                        grabbedObj.ResetInertiaTensor();
+                        grabDist = hit.distance;
+                    }
+                }
+            }
+            else
+            {
+                grabbedObj.useGravity = true;
+                grabbedObj = null;
+            }
+        }
+    }
 
+    private void MaintainGrab()
+    {
+        grabbedObj.ResetInertiaTensor();
+        grabbedObj.MovePosition(mainCamera.transform.position + mainCamera.transform.forward * grabDist);
+        grabbedObj.MoveRotation(mainCamera.transform.rotation);
     }
 }

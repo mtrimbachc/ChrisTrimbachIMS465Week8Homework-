@@ -18,7 +18,7 @@ public class DoorDetection : MonoBehaviour
         
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.tag == "Key")
         {
