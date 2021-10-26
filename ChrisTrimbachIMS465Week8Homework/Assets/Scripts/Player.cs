@@ -75,15 +75,15 @@ public class Player : MonoBehaviour
         Vector3 newLookX = transform.localEulerAngles;
         Vector3 newLookY = head.transform.localEulerAngles;
 
-        newLookX.y += LookX * sensitivity;
-        newLookY.x -= LookY * sensitivity;
+        newLookX.y += LookX * sensitivity * Time.deltaTime;
+        newLookY.x -= LookY * sensitivity * Time.deltaTime;
 
         // Prevents clipping
         if (newLookY.x >= 90 && newLookY.x < 180)
-            newLookY.x += LookY * sensitivity;
+            newLookY.x += LookY * sensitivity * Time.deltaTime;
 
         if (newLookY.x <= 270 && newLookY.x > 180)
-            newLookY.x += LookY * sensitivity;
+            newLookY.x += LookY * sensitivity * Time.deltaTime;
 
         transform.localEulerAngles = newLookX;
         head.transform.localEulerAngles = newLookY;
